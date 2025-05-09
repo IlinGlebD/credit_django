@@ -1,0 +1,68 @@
+<!-- iad_app/templates/credit_result.html -->
+{% load static %}
+{% load extra_filters %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Результат анализа</title>
+    <style>
+        body { font-family: Arial; padding: 30px; background: #f2f2f2; }
+        .container { background: white; padding: 25px; max-width: 600px; margin: auto; border-radius: 10px; }
+        .result.good { color: green; }
+        .result.standard { color: orange; }
+        .result.poor { color: red; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Результат анализа</h2>
+
+        <div class="result {% if result == 'Good' %}good{% elif result == 'Standard' %}standard{% else %}poor{% endif %}">
+            Кредитный рейтинг: <strong>{{ result }}</strong>
+        </div>
+
+        <hr>
+        <h3>Введённые данные:</h3>
+        <ul>
+            <li>Возраст: {{ data.age|default:"-" }}</li>
+            <li>Годовой доход: {{ data.annual_income|default:"-" }}</li>
+            <li>Банковских счетов: {{ data.num_bank_accounts|default:"-" }}</li>
+            <li>Кредитных карт: {{ data.num_credit_cards|default:"-" }}</li>
+            <li>Процентная ставка: {{ data.interest_rate|default:"-" }}</li>
+            <li>Количество кредитов: {{ data.num_of_loans|default:"-" }}</li>
+            <li>Задержек платежей: {{ data.num_of_delayed_payments|default:"-" }}</li>
+        </ul>
+
+        <h2>Метрики модели:</h2>
+        <table border="1">
+            <tr>
+                <th>Класс</th>
+                <th>Precision</th>
+                <th>Recall</th>
+                <th>F1</th>
+            </tr>
+            {% for label, metrics in report.items %}
+                {% if label in "0 1 2" %}
+                <tr>
+                    <td>
+                        {% if label == '0' %} Плохой
+                        {% elif label == '1' %} Стандартный
+                        {% elif label == '2' %} Хороший
+                        {% endif %}
+                    </td>
+                    <td>{{ metrics.precision|floatformat:2 }}</td>
+                    <td>{{ metrics.recall|floatformat:2 }}</td>
+                    <td>{{ report|lookup:"macro avg"|lookup:"f1-score"|floatformat:2 }}</td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+
+        <h2>Важность признаков:</h2>
+        <img src="/static/{{ image }}" alt="Feature importance" width="500">
+
+        <a href="{% url 'credit_form' %}">← Назад</a>
+    </div>
+</body>
+</html>

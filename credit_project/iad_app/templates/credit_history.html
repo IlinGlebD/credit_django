@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>История заявок</title>
+</head>
+<body>
+    <h1>История заявок</h1>
+
+<form method="get">
+    {{ form.as_p }}
+    <button type="submit">Фильтровать</button>
+    <a href="{% url 'credit_history' %}">Сбросить</a>
+</form>
+
+<hr>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Имя</th>
+            <th>Дата</th>
+            <th>Возраст</th>
+            <th>Доход</th>
+            <th>Счета</th>
+            <th>Карты</th>
+            <th>Кредиты</th>
+            <th>Задержки</th>
+            <th>Ставка</th>
+            <th>Результат</th>
+        </tr>
+        {% for app in applications %}
+        <tr>
+            <td>{{ app.name }}</td>
+            <td>{{ app.created_at|date:"d.m.Y H:i" }}</td>
+            <td>{{ app.age }}</td>
+            <td>{{ app.annual_income }}</td>
+            <td>{{ app.num_bank_accounts }}</td>
+            <td>{{ app.num_credit_cards }}</td>
+            <td>{{ app.num_of_loans }}</td>
+            <td>{{ app.num_of_delayed_payments }}</td>
+            <td>{{ app.interest_rate }}</td>
+            <td>{{ app.prediction }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p><a href="{% url 'credit_form' %}">← Назад</a></p>
+</body>
+</html>
