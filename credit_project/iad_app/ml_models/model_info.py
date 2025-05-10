@@ -28,7 +28,8 @@ def generate_model_report_image():
     df['Num_of_Delayed_Payment'] = df['Num_of_Delayed_Payment'].apply(to_float)
     df = df.dropna()
 
-    df['Credit_Score_Label'] = df['Credit_Score'].map({'Poor': 0, 'Standard': 1, 'Good': 2})
+    df['Credit_Score_Label'] = df['Credit_Score'].map({'Poor': 0, 'Standard': 1,
+                                                       'Good': 2})
 
     features = ['Age', 'Annual_Income', 'Num_Bank_Accounts',
                 'Num_Credit_Card', 'Interest_Rate',
@@ -37,9 +38,11 @@ def generate_model_report_image():
     X = df[features]
     y = df['Credit_Score_Label']
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,
+                                                        random_state=42)
 
-    model = joblib.load(os.path.join(os.path.dirname(__file__), 'credit_model_rf_randomforest.pkl'))
+    model = joblib.load(os.path.join(os.path.dirname(__file__),
+                                     'credit_model_rf_randomforest.pkl'))
 
     y_pred = model.predict(X_test)
 

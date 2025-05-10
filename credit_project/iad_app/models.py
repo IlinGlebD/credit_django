@@ -26,7 +26,7 @@ class Application(models.Model):
 # 3. Результат анализа
 class AnalysisResult(models.Model):
     application = models.OneToOneField(Application, on_delete=models.CASCADE)
-    predicted_score = models.CharField(max_length=10)  # "Good", "Standard", "Poor"
+    predicted_score = models.CharField(max_length=10)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
