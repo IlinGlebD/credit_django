@@ -5,7 +5,7 @@ from sklearn.metrics import classification_report
 import joblib
 
 # Загрузка данных
-df = pd.read_csv('iad_app/ml_models/train.csv')
+df = pd.read_csv('credit_project/iad_app/ml_models/train.csv')
 
 # Оставляем только Good и Poor
 df = df[df['Credit_Score'].isin(['Good', 'Poor'])]

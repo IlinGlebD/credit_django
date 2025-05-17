@@ -10,7 +10,7 @@ import shutil
 
 def generate_model_report_image():
     # Данные
-    df = pd.read_csv('iad_app/ml_models/train.csv')
+    df = pd.read_csv('credit_project/iad_app/ml_models/train.csv')
     df = df[df['Credit_Score'].isin(['Good', 'Standard', 'Poor'])]
     df = df.replace(' ', pd.NA)
     df = df.dropna(subset=[
