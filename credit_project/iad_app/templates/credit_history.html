@@ -3,46 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <title>История заявок</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #c8d2e3;
+        }
+        main {
+            max-width: 1000px;
+            margin: 40px auto;
+            background-color: #b7c2d3;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        h1 {
+            color: #29559b;
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        input, select, textarea {
+            padding: 2px;
+            border: 1px solid #d4dbed;
+            border-radius: 6px;
+            font-size: 1rem;
+            background-color: #edf1f9;
+        }
+        button {
+            background-color: #4789f3;
+            color: #edf1f9;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            width: fit-content;
+        }
+        button:hover {
+            background-color: #306ced;
+        }
+        a {
+            color: #29559b;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #edf1f9;
+            border: 1px solid #d4dbed;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #d4dbed;
+            text-align: center;
+        }
+        th {
+            background-color: #d4dbed;
+            color: #29559b;
+        }
+    </style>
 </head>
 <body>
+    <main>
     <h1>История заявок</h1>
 
-<form method="get">
-    {{ form.as_p }}
-    <button type="submit">Фильтровать</button>
-    <a href="{% url 'credit_history' %}">Сбросить</a>
-</form>
+    <form method="get">
+        {{ form.as_p }}
+        <button type="submit">Фильтровать</button>
+        <a href="{% url 'credit_history' %}">Сбросить</a>
+    </form>
 
-<hr>
-    <table border="1" cellpadding="5">
-        <tr>
-            <th>Имя</th>
-            <th>Дата</th>
-            <th>Возраст</th>
-            <th>Доход</th>
-            <th>Счета</th>
-            <th>Карты</th>
-            <th>Кредиты</th>
-            <th>Задержки</th>
-            <th>Ставка</th>
-            <th>Результат</th>
-        </tr>
-        {% for app in applications %}
-        <tr>
-            <td>{{ app.name }}</td>
-            <td>{{ app.created_at|date:"d.m.Y H:i" }}</td>
-            <td>{{ app.age }}</td>
-            <td>{{ app.annual_income }}</td>
-            <td>{{ app.num_bank_accounts }}</td>
-            <td>{{ app.num_credit_cards }}</td>
-            <td>{{ app.num_of_loans }}</td>
-            <td>{{ app.num_of_delayed_payments }}</td>
-            <td>{{ app.interest_rate }}</td>
-            <td>{{ app.prediction }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <p><a href="{% url 'credit_form' %}">← Назад</a></p>
+    <hr>
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>Имя</th>
+                <th>Дата</th>
+                <th>Возраст</th>
+                <th>Доход</th>
+                <th>Счета</th>
+                <th>Карты</th>
+                <th>Кредиты</th>
+                <th>Задержки</th>
+                <th>Ставка</th>
+                <th>Результат</th>
+            </tr>
+            {% for app in applications %}
+            <tr>
+                <td>{{ app.name }}</td>
+                <td>{{ app.created_at|date:"d.m.Y H:i" }}</td>
+                <td>{{ app.age }}</td>
+                <td>{{ app.annual_income }}</td>
+                <td>{{ app.num_bank_accounts }}</td>
+                <td>{{ app.num_credit_cards }}</td>
+                <td>{{ app.num_of_loans }}</td>
+                <td>{{ app.num_of_delayed_payments }}</td>
+                <td>{{ app.interest_rate }}</td>
+                <td>{{ app.prediction }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </main>
+    <footer>
+        <p><a href="{% url 'credit_form' %}">← Назад</a></p>
+    </footer>
 </body>
 </html>
