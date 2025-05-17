@@ -1,28 +1,93 @@
-<!-- iad_app/templates/credit_form.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Анализ кредитоспособности</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #c8d2e3;
+        }
+        main {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #b7c2d3;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 5px;
+        }
+        h1 {
+            color: #29559b;
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        input, select, textarea {
+            padding: 2px;
+            border: 1px solid #d4dbed;
+            border-radius: 6px;
+            font-size: 1rem;
+            background-color: #edf1f9;
+        }
+        button {
+            background-color: #4789f3;
+            color: #edf1f9;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background-color: #306ced;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+        footer {
+            text-align: center;
+            padding-top: 0;
+            margin-top: 0;
+            padding-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        footer a {
+            color: #29559b;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>   
 </head>
 <body>
-    <h1>Анализ кредитного рейтинга</h1>
-
-    {% if form.errors %}
-        <ul style="color:red;">
-            {% for field in form %}
-                {% for error in field.errors %}
-                    <li>{{ field.label }}: {{ error }}</li>
+    <main>
+        <h1>Анализ кредитного рейтинга</h1>
+        {% if form.errors %}
+            <ul style="color:red;">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ field.label }}: {{ error }}</li>
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
-        </ul>
-    {% endif %}
+            </ul>
+        {% endif %}
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Проверить</button>
-    </form>
-    <a href="{% url 'credit_history' %}">История рейтинга</a>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Проверить</button>
+        </form>
+    </main>
+    <footer>
+        <a href="{% url 'credit_history' %}">История рейтинга</a>
+    </footer>
 </body>
 </html>
