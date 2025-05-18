@@ -71,9 +71,9 @@
                 {% if label in "0 1 2" %}
                 <tr>
                     <td>
-                        {% if label == '0' %} Плохой
-                        {% elif label == '1' %} Стандартный
-                        {% elif label == '2' %} Хороший
+                        {% if label == '0' %} Низкий
+                        {% elif label == '1' %} Средний
+                        {% elif label == '2' %} Высокий
                         {% endif %}
                     </td>
                     <td>{{ metrics.precision|floatformat:2 }}</td>
