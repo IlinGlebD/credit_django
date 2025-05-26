@@ -14,42 +14,40 @@
         .container { 
             background: #b7c2d3;
             padding: 30px;
-            max-width: 600px;
+            max-width: 700px;
             margin: 40px auto;
             border-radius: 12px;
         }
-        h2 {
-            color: #29559b;
-        }
-        h1 {
+        h1, h2 {
             color: #29559b;
             text-align: center;
         }
         tr {
             background-color: #d4dbed;
         }
-        .result.good {
-            color: green;
-        }
-        .result.standard {
-            color: orange;
-        }
-        .result.poor {
-            color: red;
-        }
+        .result.high { color: green; }
+        .result.medium { color: orange; }
+        .result.low { color: red; }
+        ul { line-height: 1.7; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Результат анализа</h1>
 
-        <div class="result {% if result == 'Good' %}good{% elif result == 'Standard' %}standard{% else %}poor{% endif %}">
-            Кредитный рейтинг: <strong>{{ result }}</strong>
+        <div class="result 
+            {% if result == 'Высокий' %}high
+            {% elif result == 'Средний' %}medium
+            {% else %}low{% endif %}">
+            <p>Кредитный рейтинг: <strong>{{ result }}</strong></p>
+            <p>Кредитный балл: <strong>{{ score }}</strong> из 999</p>
+            <p>Рекомендованная процентная ставка: <strong>{{ suggested_rate }}%</strong></p>
         </div>
 
         <hr>
         <h3>Введённые данные:</h3>
         <ul>
+            <li>ФИО: {{ data.name|default:"-" }}</li>
             <li>Возраст: {{ data.age|default:"-" }}</li>
             <li>Годовой доход: {{ data.annual_income|default:"-" }}</li>
             <li>Банковских счетов: {{ data.num_bank_accounts|default:"-" }}</li>
@@ -59,35 +57,9 @@
             <li>Задержек платежей: {{ data.num_of_delayed_payments|default:"-" }}</li>
         </ul>
 
-        <h2>Метрики модели:</h2>
-        <table border="1">
-            <tr>
-                <th>Класс</th>
-                <th>Precision</th>
-                <th>Recall</th>
-                <th>F1</th>
-            </tr>
-            {% for label, metrics in report.items %}
-                {% if label in "0 1 2" %}
-                <tr>
-                    <td>
-                        {% if label == '0' %} Низкий
-                        {% elif label == '1' %} Средний
-                        {% elif label == '2' %} Высокий
-                        {% endif %}
-                    </td>
-                    <td>{{ metrics.precision|floatformat:2 }}</td>
-                    <td>{{ metrics.recall|floatformat:2 }}</td>
-                    <td>{{ report|lookup:"macro avg"|lookup:"f1-score"|floatformat:2 }}</td>
-                </tr>
-                {% endif %}
-            {% endfor %}
-        </table>
-
-        <h2>Важность признаков:</h2>
-        <img src="/static/{{ image }}" alt="Feature importance" width="500">
-
-        <a href="{% url 'credit_form' %}"><br>← Назад</a>
+        <div style="text-align:center; margin-top: 20px;">
+            <a href="{% url 'credit_form' %}">← Назад к форме</a>
+        </div>
     </div>
 </body>
 </html>

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -26,8 +27,8 @@
             gap: 12px;
             margin-bottom: 20px;
         }
-        input, select, textarea {
-            padding: 2px;
+        input, select {
+            padding: 6px;
             border: 1px solid #d4dbed;
             border-radius: 6px;
             font-size: 1rem;
@@ -76,7 +77,7 @@
     </style>
 </head>
 <body>
-    <main>
+<main>
     <h1>История заявок</h1>
 
     <form method="get">
@@ -86,7 +87,9 @@
     </form>
 
     <hr>
-        <table border="1" cellpadding="5">
+
+    <table>
+        <thead>
             <tr>
                 <th>Имя</th>
                 <th>Дата</th>
@@ -96,27 +99,35 @@
                 <th>Карты</th>
                 <th>Кредиты</th>
                 <th>Задержки</th>
-                <th>Ставка</th>
                 <th>Результат</th>
+                <th>Рейтинг</th>
+                <th>Ставка</th>
             </tr>
+        </thead>
+        <tbody>
             {% for app in applications %}
             <tr>
-                <td>{{ app.name }}</td>
+                <td>{{ app.client.name }}</td>
                 <td>{{ app.created_at|date:"d.m.Y H:i" }}</td>
-                <td>{{ app.age }}</td>
-                <td>{{ app.annual_income }}</td>
+                <td>{{ app.client.age }}</td>
+                <td>{{ app.client.annual_income }}</td>
                 <td>{{ app.num_bank_accounts }}</td>
                 <td>{{ app.num_credit_cards }}</td>
                 <td>{{ app.num_of_loans }}</td>
                 <td>{{ app.num_of_delayed_payments }}</td>
-                <td>{{ app.interest_rate }}</td>
-                <td>{{ app.prediction }}</td>
+                <td>{{ app.analysisresult.predicted_score }}</td>
+                <td>{{ app.analysisresult.credit_score }}</td>
+                <td>{{ app.analysisresult.suggested_rate }}%</td>
             </tr>
+            {% empty %}
+            <tr><td colspan="10">Заявок пока нет</td></tr>
             {% endfor %}
-        </table>
-    </main>
-    <footer>
-        <p><a href="{% url 'credit_form' %}">← Назад</a></p>
-    </footer>
+        </tbody>
+    </table>
+
+    <p style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'credit_form' %}">← Назад к форме</a>
+    </p>
+</main>
 </body>
 </html>

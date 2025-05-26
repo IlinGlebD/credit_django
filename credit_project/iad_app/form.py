@@ -17,14 +17,15 @@ class CreditForm(forms.Form):
 
 
 class FilterForm(forms.Form):
-    name = forms.CharField(label="Имя", required=False)
+    name = forms.CharField(label="Имя клиента", required=False)
+
     prediction = forms.ChoiceField(
-        label="Рейтинг",
+        label="Кредитный рейтинг",
         choices=[
             ('', '--- все ---'),
-            ('Хороший', 'Хороший'),
-            ('Стандартный', 'Стандартный'),
-            ('Плохой', 'Плохой')
+            ('Высокий', 'Высокий'),
+            ('Средний', 'Средний'),
+            ('Низкий', 'Низкий')
         ],
         required=False
     )
