@@ -12,7 +12,7 @@
             padding: 30px;
             background: #c8d2e3;
         }
-        .container { 
+        .container {
             background: #b7c2d3;
             padding: 30px;
             max-width: 700px;
@@ -26,41 +26,141 @@
         tr {
             background-color: #d4dbed;
         }
-        .result.high { color: green; }
-        .result.medium { color: orange; }
-        .result.low { color: red; }
-        ul { line-height: 1.7; }
+        ul {
+            line-height: 1.7;
+        }
+        table.result-table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+            background-color: #d4dbed;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .result-table td {
+            padding: 12px 16px;
+            font-size: 1.1em;
+        }
+        .result-table td:first-child {
+            font-weight: bold;
+            color: #2c3e50;
+            width: 60%;
+        }
+        .result-table strong {
+            font-weight: bold;
+        }
+
+        .result-low {
+            color: #d9534f;
+        }
+
+        .result-medium {
+            color: #f0ad4e;
+        }
+
+        .result-high {
+            color: #5cb85c;
+        }
+
+        .score-graph {
+            margin-top: 40px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Результат анализа</h1>
+<div class="container">
+    <h1>Результат анализа</h1>
 
-        <div class="result 
-            {% if result == 'Высокий' %}high
-            {% elif result == 'Средний' %}medium
-            {% else %}low{% endif %}">
-            <p>Кредитный рейтинг: <strong>{{ result }}</strong></p>
-            <p>Кредитный балл: <strong>{{ score }}</strong> из 999</p>
-            <p>Рекомендованная процентная ставка: <strong>{{ suggested_rate }}%</strong></p>
-        </div>
+    <table class="result-table">
+        <tr>
+            <td>Рекомендованная процентная ставка:</td>
+            <td><strong>{{ suggested_rate }}%</strong></td>
+        </tr>
+    </table>
 
-        <hr>
-        <h3>Введённые данные:</h3>
-        <ul>
-            <li>ФИО: {{ data.name|default:"-" }}</li>
-            <li>Возраст: {{ data.age|default:"-" }}</li>
-            <li>Годовой доход: {{ data.annual_income|default:"-" }}</li>
-            <li>Банковских счетов: {{ data.num_bank_accounts|default:"-" }}</li>
-            <li>Кредитных карт: {{ data.num_credit_cards|default:"-" }}</li>
-            <li>Процентная ставка: {{ data.interest_rate|default:"-" }}</li>
-            <li>Количество кредитов: {{ data.num_of_loans|default:"-" }}</li>
-            <li>Задержек платежей: {{ data.num_of_delayed_payments|default:"-" }}</li>
-        </ul>
+    <h3>Введённые данные:</h3>
+    <ul>
+        <li>ФИО: {{ data.name|default:"-" }}</li>
+        <li>Возраст: {{ data.age|default:"-" }}</li>
+        <li>Годовой доход: {{ data.annual_income|default:"-" }}</li>
+        <li>Банковских счетов: {{ data.num_bank_accounts|default:"-" }}</li>
+        <li>Кредитных карт: {{ data.num_credit_cards|default:"-" }}</li>
+        <li>Процентная ставка: {{ data.interest_rate|default:"-" }}</li>
+        <li>Количество кредитов: {{ data.num_of_loans|default:"-" }}</li>
+        <li>Задержек платежей: {{ data.num_of_delayed_payments|default:"-" }}</li>
+    </ul>
 
-        <div style="text-align:center; margin-top: 20px;">
-            <a href="{% url 'credit_form' %}">← Назад к форме</a>
-        </div>
+    <table class="result-table">
+        <tr>
+            <td>Кредитный рейтинг:</td>
+            <td>
+                <strong class="
+                    {% if result == 'Высокий' %}result-high
+                    {% elif result == 'Средний' %}result-medium
+                    {% elif result == 'Низкий' %}result-low
+                    {% endif %}
+                ">
+                    {{ result }}
+                </strong>
+            </td>
+        </tr>
+        <tr>
+            <td>Кредитный балл:</td>
+            <td><strong>{{ score }}</strong> из 999</td>
+        </tr>
+    </table>
+
+    <div class="score-graph">
+        <svg width="300" height="170" viewBox="0 0 300 150">
+            <defs>
+                <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#d9534f"/>
+                    <stop offset="50%" stop-color="#f0ad4e"/>
+                    <stop offset="100%" stop-color="#5cb85c"/>
+                </linearGradient>
+            </defs>
+
+            <path d="M 20 130 A 130 130 0 0 1 280 130"
+                  fill="none" stroke="url(#grad)" stroke-width="20"/>
+
+            <line id="indicator" x1="150" y1="130" x2="150" y2="0"
+                  stroke="#1c1c1c" stroke-width="6" stroke-linecap="round" />
+
+            <text x="150" y="145" text-anchor="middle" font-size="18" fill="#1c1c1c">
+                Балл: {{ score }} / 999
+            </text>
+        </svg>
     </div>
+
+    <hr>
+
+    <div style="text-align:center; margin-top: 20px;">
+        <a href="{% url 'credit_form' %}">← Назад к форме</a>
+    </div>
+</div>
+
+<script>
+    const score = Number("{{ score|default:0 }}");
+    const minScore = 1;
+    const maxScore = 999;
+
+    const t = (score - minScore) / (maxScore - minScore);
+
+    const angle = Math.PI - t * Math.PI;
+
+    const centerX = 150;
+    const centerY = -100; 
+    const radius = 130;
+
+    const x2 = centerX + radius * Math.cos(angle);
+    const y2 = centerY + radius * Math.sin(angle);
+
+    const indicator = document.getElementById("indicator");
+    if (indicator) {
+        indicator.setAttribute("x2", x2.toFixed(2));
+        indicator.setAttribute("y2", y2.toFixed(2));
+    }
+</script>
 </body>
 </html>
