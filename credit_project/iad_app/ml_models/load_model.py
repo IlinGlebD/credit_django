@@ -3,10 +3,12 @@ import os
 import numpy as np
 
 # Путь к модели
-MODEL_PATH = os.path.join(os.path.dirname(__file__), 'credit_model_rf_randomforest.pkl')
+MODEL_PATH = os.path.join(os.path.dirname(__file__),
+                          'credit_model_rf_randomforest.pkl')
 model = joblib.load(MODEL_PATH)
 
 CLASS_MAP = {0: "Низкий", 1: "Средний", 2: "Высокий"}
+
 
 def predict_credit_score(input_data: dict) -> tuple[str, int, float]:
     """
