@@ -72,13 +72,6 @@
 <div class="container">
     <h1>Результат анализа</h1>
 
-    <table class="result-table">
-        <tr>
-            <td>Рекомендованная процентная ставка:</td>
-            <td><strong>{{ suggested_rate }}%</strong></td>
-        </tr>
-    </table>
-
     <h3>Введённые данные:</h3>
     <ul>
         <li>ФИО: {{ data.name|default:"-" }}</li>
@@ -92,6 +85,10 @@
     </ul>
 
     <table class="result-table">
+        <tr>
+            <td>Рекомендованная процентная ставка:</td>
+            <td><strong>{{ suggested_rate }}%</strong></td>
+        </tr>
         <tr>
             <td>Кредитный рейтинг:</td>
             <td>
